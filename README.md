@@ -1,32 +1,66 @@
-# Kiwitter: A Simple Twitter Clone
+# Kiwitter - Twitter Benzeri Sosyal Medya Uygulaması
 
-## Kapsam
+Bu proje, React ve Tailwind CSS kullanılarak geliştirilmiş Twitter benzeri bir sosyal medya uygulamasıdır. Kullanıcılar kayıt olabilir, giriş yapabilir, twit paylaşabilir, twitleri beğenebilir ve yanıtlayabilirler.
 
-- **user register:** Frontend'de signup ekranı olacak. Şifre db'de şifrelenerek saklanmalı.
-- **user giriş:** Girilen bilgilerle kaydedilmiş kullanıcı varsa, server 6 saat geçerli bir JWT token döndürmeli.
-- **twit yazma:** sadece metin girebilir.
-- **twit reply:** twitler yanıtlanabilmeli. Yanıtların kendisi yanıtlanmamalı.
-- **like:** kullanıcılar twitleri beğenebilmeli. Bir kullanıcı aynı twiti sadece 1 kez beğenebilmeli.
-- **ana akış:** her kullanıcı aynı akışı görmeli. takip etme, ya da gizli hesap yok. son atılan twitler görüntülenmeli. like ve reply sayıları görünmeli. ana akışta başka bir twite reply olarak yazılan twitler görünmemeli.
-- **en beğenilenler akışı:** son 24 saatte en beğenilen twitler görünmeli. Like sayısına göre çoktan aza.
-- **twit detay:** bir twit, ona yazılan cevaplar, like sayıları, tarihi görünmeli.
-- **profil sayfası:** kendi yazdığı twitler görünmeli
-- **twit silme:** kullanıcılar sadece kendi twitilerini silebilmeli, admin her twiti silebilmeli.
+## Özellikler
 
-## endpointler
+- Kullanıcı kaydı ve girişi
+- Twit oluşturma
+- Twitleri beğenme
+- Twitlere yanıt verme
+- Profil sayfaları
+- Son twitler ve en beğenilen twitler görünümleri
+- Mobil uyumlu tasarım
 
-| İşlem          | Method | Endpoint                  |
-| -------------- | ------ | ------------------------- |
-| createUser     | POST   | `/users`                  |
-| login          | POST   | `/login`                  |
-| createTwit     | POST   |  `/twits`                 |
-| replyToTwit    | POST   |  `/twits/:twitId/replies` |
-| likeTwit       | POST   |  `/twits/:twitId/likes`   |
-| getTwits       | GET    |  `/twits`                 |
-| getTopTwits    | GET    |  `/twits/popular`         |
-| getTwitDetails | GET    |  `/twits/:twitId`         |
-| getUserTwits   | GET    | `/users/:userId/twits`    |
-| getUserLikes   | GET    | `/users/:userId/likes`    |
+## Kullanılan Teknolojiler
 
-https://kiwitter-node-77f5acb427c1.herokuapp.com/api-docs/#/
-baseURL: https://kiwitter-node-77f5acb427c1.herokuapp.com
+- React
+- React Router
+- Tailwind CSS
+- Axios
+- React Hook Form
+- date-fns
+
+## Kurulum
+
+Projeyi yerel ortamınızda çalıştırmak için:
+
+```bash
+# Depoyu klonlayın
+git clone https://github.com/username/kiwitter-fe.git
+cd kiwitter-fe
+
+# Bağımlılıkları yükleyin
+npm install
+
+# Geliştirme sunucusunu başlatın
+npm run dev
+```
+
+Uygulama varsayılan olarak http://localhost:5176 adresinde çalışacaktır.
+
+## API Bağlantısı
+
+Bu frontend uygulaması, `https://kiwitter-node-77f5acb427c1.herokuapp.com` adresindeki bir Node.js backend API'sine bağlanmaktadır. API, twit oluşturma, listeleme, kullanıcı yönetimi ve etkileşim gibi tüm gerekli işlevleri sağlar.
+
+## Proje Yapısı
+
+```
+kiwitter-fe/
+├── src/
+│   ├── assets/        # Resimler ve diğer statik dosyalar
+│   ├── components/    # Yeniden kullanılabilir UI bileşenleri
+│   ├── contexts/      # React context'leri
+│   ├── pages/         # Uygulama sayfaları
+│   ├── services/      # API servis katmanı
+│   ├── App.jsx        # Ana uygulama bileşeni
+│   ├── main.jsx       # Uygulama giriş noktası
+│   └── ...
+├── public/            # Statik dosyalar
+├── package.json       # Bağımlılıklar ve script'ler
+└── README.md          # Proje dökümantasyonu
+```
+
+## Lisans
+
+MIT

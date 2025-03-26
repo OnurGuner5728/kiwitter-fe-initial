@@ -1,23 +1,48 @@
 import queryString from "query-string";
+import { useContext } from "react";
+import { useHistory } from "react-router-dom";
 import AuthLayout from "./AuthLayout";
 import { useLocation } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import { authService } from "./services/api";
+import { UserContext } from "./contexts/UserContext";
+import { NotificationContext } from "./contexts/NotificationContext";
+import { Link } from "react-router-dom";
 
 export default function Login() {
   const { search } = useLocation();
+  const history = useHistory();
   const values = queryString.parse(search);
-  console.log(values.expiresIn, "***");
+  const { setToken, setUser } = useContext(UserContext);
+  const { showNotification } = useContext(NotificationContext);
 
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm({
     mode: "onChange",
   });
 
-  function handleLogin(data) {
-    console.log(data, "---");
+  async function handleLogin(data) {
+    try {
+      const response = await authService.login(data);
+      const { token, user } = response.data;
+      
+      // Token ve kullanıcı bilgilerini saklayalım
+      setToken(token);
+      setUser(user);
+      localStorage.setItem('user', JSON.stringify(user));
+      
+      showNotification("Başarıyla giriş yapıldı", "success");
+      history.push("/");
+    } catch (error) {
+      console.error("Giriş hatası:", error);
+      showNotification(
+        error.response?.data?.message || "Giriş yapılırken bir hata oluştu",
+        "error"
+      );
+    }
   }
 
   return (
@@ -28,7 +53,7 @@ export default function Login() {
       <form onSubmit={handleSubmit(handleLogin)}>
         <div className="pt-4">
           <div className="flex justify-between gap-2 items-baseline pb-1">
-            <label htmlFor="nickname ">Kullanıcı adı</label>
+            <label htmlFor="nickname">Kullanıcı adı</label>
             <span className="text-sm font-medium text-red-600">
               {errors.nickname && errors.nickname.message.toString()}
             </span>
@@ -56,10 +81,20 @@ export default function Login() {
         <div className="pt-4">
           <button
             type="submit"
-            className="h-12 text-center block w-full rounded-lg bg-lime-700 text-white font-bold "
+            className="h-12 text-center block w-full rounded-lg bg-lime-700 text-white font-bold"
+            disabled={isSubmitting}
           >
-            GİRİŞ
+            {isSubmitting ? "GİRİŞ YAPILIYOR..." : "GİRİŞ"}
           </button>
+        </div>
+
+        <div className="pt-4 text-center">
+          <p className="text-gray-600">
+            Hesabınız yok mu?{" "}
+            <Link to="/signup" className="text-lime-700 font-semibold">
+              Kayıt Ol
+            </Link>
+          </p>
         </div>
       </form>
     </AuthLayout>
